@@ -1,4 +1,4 @@
-#User Stories
+#User Stories#
 1. As a user, I would like to pick my favorite product out of *three* different products shown.
 2. As a user, I would like the app to display which product I liked most after the survey has ended.
 3. As a user, I would like the app to look clean and presentable as well as being user friendly.
