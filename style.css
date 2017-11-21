@@ -1,0 +1,27 @@
+.img-space {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto;
+  grid-column-gap: 20px;
+}
+
+#scaores {
+  background-color: cyan;
+  padding-left: 10px;
+}
+
+.image-one {
+  background-color: black;
+
+}
+.image-two {
+  background-color: black;
+
+}
+.image-three {
+  background-color: black;
+
+}
+img {
+  height: 200px;
+}
