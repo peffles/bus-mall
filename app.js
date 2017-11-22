@@ -3,14 +3,15 @@
 var allProducts = [];
 var totalClicks = 0;
 var productNames = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass'];
-var files = ['bag.jpg', 'banana.jpg', 'bathroom.jpg', 'boots.jpg', 'breakfast.jpg', 'bubblegum.jpg', 'chair.jpg', 'cthulhu.jpg', 'dog-duck.jpg', 'dragon.jpg', 'pen.jpg', 'pet-sweep.jpg', 'scissors.jpg', 'shark.jpg', 'sweep.jpg', 'tauntaun.jpg', 'unicorn.jpg', 'usb.gif', 'water-can.jpg', 'wine-glass.jpg'];
+var files = ['bag.jpg', 'banana.jpg', 'bathroom.jpg', 'boots.jpg', 'breakfast.jpg', 'bubblegum.jpg', 'chair.jpg', 'cthulhu.jpg', 'dog-duck.jpg', 'dragon.jpg', 'pen.jpg', 'pet-sweep.jpg', 'scissors.jpg', 'shark.jpg', 'sweep.jpg', 'tauntaun.jpg', 'unicorn.jpg', 'usb.jpg', 'water-can.jpg', 'wine-glass.jpg'];
 
-function Product(productName, imageName, counter, displayCount) {
+function Product(productName, imageName, voteCount, displayCount) {
   this.productName = productName;
   this.imageName = imageName;
-  this.counter = counter;
+  this.voteCount = voteCount;
   this.displayCount = displayCount;
   allProducts.push(this);
+  console.log('hit', displayCount);
 }
 
 for(var i = 0; i < productNames.length; i++) {
@@ -45,27 +46,49 @@ var productRank = {
     }
   },
   tallyClicks: function(elementId) {
-    allProducts[elementId].counter++;
+    allProducts[elementId].voteCount++;
     totalClicks++;
+    console.log('clicked');
     if(totalClicks >= 5) {
+      console.log('hit5', totalClicks);
       document.getElementById('image-1').removeEventListener('click', productRank.onClick);
       document.getElementById('image-2').removeEventListener('click', productRank.onClick);
       document.getElementById('image-3').removeEventListener('click', productRank.onClick);
-      productRank.displayResults();
+      productRank.displayChart();
+      console.log('fdfdd', allProducts.voteCount);
     }
   },
 
-  displayResults: function() {
+  displayChart: function(elementId) {
 
-    var divElement = document.getElementById('scores');
-    var pElement = document.createElement('p');
-    pElement.textContent = 'Results';
-    divElement.appendChild(pElement);
-    for(var l = 0; l < allProducts.length; l++) {
-      pElement = document.createElement('p');
-      pElement.textContent = allProducts[l].counter + ' votes for ' + allProducts[l].productName;
-      divElement.appendChild(pElement);
-    }
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var options = {
+      type: 'bar',
+      data: {
+        labels: productNames,
+        datasets: [{
+          label: 'Number of Votes',
+          data: allProducts.voteCount,
+          borderWidth: 1
+        },
+        /*{
+      label: '# of Votes',
+      data: [12, 19, 3, 5, 2, 3],
+      borderWidth: 1
+    }*/]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
+      }
+    };
+
+var myChart = new Chart(ctx, options);
   },
 
   showButton: function() {

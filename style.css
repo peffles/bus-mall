@@ -1,13 +1,18 @@
+h1 {
+  text-align: center;
+  font-family: cursive;
+}
 .img-space {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: auto;
-  grid-column-gap: 20px;
+  grid-column-gap: 50px;
 }
 
-#scaores {
+#scores {
   background-color: cyan;
   padding-left: 10px;
+  line-height: 50%;
 }
 
 .image-one {
