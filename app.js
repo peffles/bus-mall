@@ -9,7 +9,7 @@ function Product(productName, imageName, voteCount, displayCount) {
   this.productName = productName;
   this.imageName = imageName;
   this.voteCount = voteCount;
-  this.displayCount = displayCount;
+  this.displayCount = 0;
   allProducts.push(this);
   console.log('hit', displayCount);
 }
@@ -27,40 +27,45 @@ var productRank = {
     var index = [];
     while(index.length < 3) {
       var randomIndex = productRank.getRandomIndex();
-      if(allProducts[randomIndex].displayCount === 0) {
+      if(index.indexOf(randomIndex) === -1) {
         allProducts[randomIndex].displayCount++;
         index.push(randomIndex);
       }
     }
+
     for(var i = 0; i < 3; i++) {
-      var previousImage = document.getElementById(i);
-      if(previousImage) {
-        previousImage.remove();
-      }
       var divElement = document.getElementById('image-' + (i + 1));
-      var imageElement = document.createElement('img');
-      imageElement.src = 'assets/' + files[index[i]];
-      imageElement.id = i;
-      imageElement.className = [index[i]];
+      var imageElement = this.createImage(index[i]);
+      divElement.innerHTML = '';
       divElement.appendChild(imageElement);
     }
   },
+  createImage: function(index){
+    var imageElement = document.createElement('img');
+    imageElement.src = 'assets/' + files[index];
+    imageElement.id = i;
+    imageElement.className = [index];
+    return imageElement;
+  },
   tallyClicks: function(elementId) {
     allProducts[elementId].voteCount++;
+    console.log('clicked', allProducts[elementId]);
     totalClicks++;
     console.log('clicked');
-    if(totalClicks >= 5) {
+    if(totalClicks >= 25) {
       console.log('hit5', totalClicks);
       document.getElementById('image-1').removeEventListener('click', productRank.onClick);
       document.getElementById('image-2').removeEventListener('click', productRank.onClick);
       document.getElementById('image-3').removeEventListener('click', productRank.onClick);
-      productRank.displayChart();
+      productRank.displayChart(elementId);
       console.log('fdfdd', allProducts.voteCount);
+      for(var i = 0; i < 3; i++) {
+        document.getElementById('image-' + (i + 1)).remove();
+      }
     }
   },
 
-  displayChart: function(elementId) {
-
+  displayChart: function() {
     var ctx = document.getElementById('myChart').getContext('2d');
     var options = {
       type: 'bar',
@@ -68,7 +73,30 @@ var productRank = {
         labels: productNames,
         datasets: [{
           label: 'Number of Votes',
-          data: allProducts.voteCount,
+          data: allProducts.map(function(x) {return x.voteCount;}),
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+          ],
           borderWidth: 1
         },
         /*{
@@ -81,15 +109,19 @@ var productRank = {
         scales: {
           yAxes: [{
             ticks: {
+              min: 0,
+              max: 24,
+              stepSize: 2,
               beginAtZero: true
             }
           }]
         }
       }
     };
-
-var myChart = new Chart(ctx, options);
+    var myChart = new Chart (ctx, options);
+    console.log('wtf', myChart);
   },
+
 
   showButton: function() {
   },
