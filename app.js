@@ -53,12 +53,14 @@ var productRank = {
     totalClicks++;
     console.log('clicked');
     if(totalClicks >= 25) {
+      localStorage.setItem('allProducts', JSON.stringify(allProducts));
+      allProducts.push(JSON.parse(localStorage.getItem('allProducts')));
       console.log('hit5', totalClicks);
       document.getElementById('image-1').removeEventListener('click', productRank.onClick);
       document.getElementById('image-2').removeEventListener('click', productRank.onClick);
       document.getElementById('image-3').removeEventListener('click', productRank.onClick);
       productRank.displayChart(elementId);
-      console.log('fdfdd', allProducts.voteCount);
+      console.log('fdfdd', this.voteCount);
       for(var i = 0; i < 3; i++) {
         document.getElementById('image-' + (i + 1)).remove();
       }
@@ -92,10 +94,7 @@ var productRank = {
             'rgba(255, 206, 86, 0.2)',
             'rgba(75, 192, 192, 0.2)',
             'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)',
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
           ],
           borderWidth: 1
         },
